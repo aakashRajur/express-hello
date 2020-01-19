@@ -1,8 +1,8 @@
 #!/bin/bash
 
-#echo "INSTALLING DEPENDENCIES"
-#export NODE_ENV=development
-#npm ci
+echo "INSTALLING DEPENDENCIES"
+export NODE_ENV=development
+npm ci
 
 echo "BUILDING APPLICATION"
 export NODE_ENV=production

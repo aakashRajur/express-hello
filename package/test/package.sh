@@ -7,5 +7,5 @@ export IMAGE_VERSION="$(cat package.json | jq -r .version)";
 docker build \
 --rm \
 --compress \
--f package/prod/Dockerfile \
--t "express-hello:$IMAGE_VERSION" .
+-f package/test/Dockerfile \
+-t "express-hello-test:$IMAGE_VERSION" .

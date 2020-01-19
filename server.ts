@@ -3,7 +3,7 @@ import express from "express";
 import morgan from "morgan";
 import compression from "compression";
 import hello from "./routes/hello";
-import index from "./routes";
+import index from "./routes/index";
 import _404 from "./routes/404";
 
 dotenv.config();

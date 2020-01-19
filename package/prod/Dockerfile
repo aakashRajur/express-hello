@@ -1,9 +1,7 @@
 FROM node:lts as BUILD
 WORKDIR /root/express-hello
-COPY ./package* ./
-RUN npm ci
-COPY . ./
-RUN package/build.sh
+COPY . .
+RUN package/prod/build.sh
 
 FROM node:lts-alpine as APP
 ENV NODE_ENV=production
