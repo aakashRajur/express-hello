@@ -1,0 +1,26 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: express-hello-ci-task
+spec:
+  inputs:
+    resources:
+      - name: ci-source
+        type: git
+  steps:
+    - name: install
+      image: node:lts
+      command:
+        - npm
+      args:
+        - "--prefix"
+        - "/workspace/ci-source"
+        - "ci"
+    - name: test
+      image: node:lts
+      command:
+        - npm
+      args:
+        - "--prefix"
+        - "/workspace/ci-source"
+        - "test"

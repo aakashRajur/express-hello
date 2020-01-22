@@ -1,0 +1,13 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: express-hello-ci-task-run
+spec:
+  taskRef:
+    name: express-hello-ci-task
+  inputs:
+    resources:
+      - name: ci-source
+        resourceRef:
+          name: express-hello-git
+
