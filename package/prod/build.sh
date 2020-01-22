@@ -15,4 +15,4 @@ echo "tekton test"
 ls /root/.aws
 cat /root/.aws/credentials
 ls /kaniko/.docker
-cat /root/.docker/config.json
+cat /kaniko/.docker/config.json
