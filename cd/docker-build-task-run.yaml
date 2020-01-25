@@ -1,0 +1,22 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TaskRun
+metadata:
+  name: express-hello-task-run
+spec:
+  taskRef:
+    name: express-hello-task
+  inputs:
+    resources:
+      - name: docker-source
+        resourceRef:
+          name: express-hello-git
+    params:
+      - name: dockerfile_path
+        value: /workspace/docker-source/package/prod/Dockerfile
+      - name: context_path
+        value: /workspace/docker-source
+  outputs:
+    resources:
+      - name: remote
+        resourceRef:
+          name: express-hello-image

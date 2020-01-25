@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: aws-cli-deployment
+  labels:
+    app: aws-cli
+spec:
+  selector:
+    matchLabels:
+      app: aws-cli
+  template:
+    metadata:
+      labels:
+        app: aws-cli
+    spec:
+      containers:
+        - name: aws-cli
+          image: mesosphere/aws-cli
+          volumeMounts:
+            - name: aws-secret
+              mountPath: /root/.aws/
+            - name: docker-config
+              mountPath: /project
+            - name: docker-login
+              mountPath: /docker-login
+          command:
+            - tail
+          args:
+            - -f 
+            - /dev/null
+      volumes:
+        - name: docker-login
+          configMap:
+            name: docker-login
+        - name: aws-secret
+          secret:
+            secretName: aws-secret
+        - name: docker-config
+          emptyDir: {}
+---
+            

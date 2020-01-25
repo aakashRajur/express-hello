@@ -1,0 +1,10 @@
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  name: express-hello-image
+spec:
+  type: image
+  params:
+    - name: url
+      value: 609401829706.dkr.ecr.ap-south-1.amazonaws.com/express-hello
+---

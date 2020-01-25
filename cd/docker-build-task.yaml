@@ -1,0 +1,53 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata: 
+  name: express-hello-task
+spec:
+  inputs:
+    resources:
+      - name: docker-source
+        type: git
+    params:
+      - name: dockerfile_path
+        type: string
+      - name: context_path
+        type: string
+  outputs:
+    resources: 
+      - name: remote
+        type: image
+  volumes:
+    - name: docker-login
+      configMap:
+        name: docker-login
+    - name: aws-secret
+      secret:
+        secretName: aws-secret
+    - name: docker-config
+      emptyDir: {}
+  steps:
+    - name: login
+      image: mesosphere/aws-cli
+      volumeMounts:
+        - name: aws-secret
+          mountPath: /tekton/home/.aws
+        - name: docker-config
+          mountPath: /project
+        - name: docker-login
+          mountPath: /docker-login
+      command:
+        - sh
+      args:
+        - /docker-login/generate.sh
+    - name: build-and-push
+      image: gcr.io/kaniko-project/executor:latest
+      volumeMounts:
+        - name: docker-config
+          mountPath: /kaniko/.docker
+      command:
+        - /kaniko/executor
+      args:
+        - --dockerfile=$(inputs.params.dockerfile_path)
+        - --context=$(inputs.params.context_path)
+        - --destination=$(outputs.resources.remote.url)
+---
