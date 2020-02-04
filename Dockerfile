@@ -1,7 +1,7 @@
 FROM node:lts as BUILD
 WORKDIR /root/express-hello
 COPY . .
-RUN package/prod/build.sh
+RUN build.sh
 
 FROM node:lts-alpine as APP
 ENV NODE_ENV=production
@@ -12,3 +12,4 @@ COPY --from=BUILD /root/express-hello/node_modules ./node_modules
 COPY --from=BUILD /root/express-hello/package* ./
 COPY --from=BUILD /root/express-hello/build ./build
 CMD npm start
+
