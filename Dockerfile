@@ -1,7 +1,7 @@
 FROM node:lts as BUILD
 WORKDIR /root/express-hello
 COPY . .
-RUN build.sh
+RUN ./build.sh
 
 FROM node:lts-alpine as APP
 ENV NODE_ENV=production

@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/bin/sh
+
+set -eu
 
 echo "INSTALLING DEPENDENCIES"
 export NODE_ENV=development
