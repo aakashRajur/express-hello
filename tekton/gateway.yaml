@@ -1,0 +1,28 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: nginx-static-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - port: 
+        number: 80
+        name: http-nginx
+        protocol: HTTP
+      hosts:
+        - "ci.dexterslab.wtf"
+      tls:
+        httpsRedirect: true
+    - port:
+        number: 443
+        name: https-nginx
+        protocol: HTTPS
+      hosts:
+        - "ci.dexterslab.wtf"
+      tls:
+        credentialName: istio-ingressgateway-certs
+        mode: SIMPLE
+        serverCertificate: sds
+        privateKey: sds
+
