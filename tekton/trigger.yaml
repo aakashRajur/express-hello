@@ -1,0 +1,60 @@
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: express-hello-ci-triggertemplate
+  namespace: cicd
+spec:
+  params:
+    - name: git_revision
+      default: master
+    - name: git_repo_url
+    - name: namespace
+      default: cicd
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1alpha1
+      kind: PipelineRun
+      metadata:
+        name: express-hello-ci-$(uid)
+        namespace: $(params.namespace)
+      spec:
+        serviceAccountName: tekton-triggers-admin
+        pipelineRef:
+          name: express-hello-ci-pipeline
+        resources:
+          - name: source-repo
+            resourceSpec:
+              type: git
+              params:
+                - name: revision
+                  value: $(params.git_revision)
+                - name: url
+                  value: $(params.git_repo_url)
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: express-hello-ci-triggerbinding
+  namespace: cicd
+spec:
+  params:
+    - name: git_revision
+      value: $(body.head_commit.id)
+    - name: git_repo_url
+      value: $(body.repository.url)
+    - name: namespace
+      value: cicd
+---
+apiVersion: tekton.dev/v1alpha1
+kind: EventListener
+metadata:
+  name: express-hello-ci-eventlistener
+  namespace: cicd
+spec:
+  serviceAccountName: tekton-triggers-admin
+  triggers:
+    - bindings:
+      - name: express-hello-ci-triggerbinding
+      template:
+        name: express-hello-ci-triggertemplate
+

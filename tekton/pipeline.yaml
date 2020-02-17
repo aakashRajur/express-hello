@@ -1,0 +1,46 @@
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: express-hello-ci-pipeline
+  namespace: cicd
+spec:
+  resources:
+    - name: source-repo
+      type: git
+  tasks:
+    - name: test
+      taskRef:
+        name: test
+      resources:
+        inputs:
+          - name: source-repo
+            resource: source-repo
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: test
+  namespace: cicd
+spec:
+  inputs:
+    resources:
+      - name: source-repo
+        type: git
+  steps:
+    - name: install
+      image:  node:lts
+      command:
+        - npm
+      args: 
+        - "--prefix"
+        - "$(inputs.resources.source-repo.path)"
+        - "ci"
+    - name: test
+      image: node:lts
+      command:
+        - npm
+      args:
+        - "--prefix"
+        - "$(inputs.resources.source-repo.path)"
+        - "test"

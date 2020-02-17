@@ -1,0 +1,20 @@
+#el-express-hello-ci-eventlistener.cicd.svc.cluster.local
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+metadata:
+  name: ci-virtual-service
+spec:
+  hosts:
+    - "ci.dexterslab.wtf"
+  gateways:
+    - nginx-static-gateway
+  http:
+    - match:
+      - uri:
+          prefix: /
+      route:
+        - destination:
+            port:
+              number: 8080
+            host: el-express-hello-ci-eventlistener.cicd.svc.cluster.local
+
